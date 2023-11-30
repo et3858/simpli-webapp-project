@@ -1,0 +1,32 @@
+.companies {
+    width: 100%;
+    height: 100vh;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.companies h1 {
+    font-size: 2em;
+    margin-bottom: 1em;
+}
+
+.companies ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.companies ul li {
+    margin-bottom: 1em;
+}
+
+.companies ul li h2 {
+    font-size: 1.5em;
+}
+
+.companies ul li p {
+    margin-bottom: 0.5em;
+}
