@@ -21,7 +21,7 @@ const Employees = () => {
         // Obtener la lista de empleados desde el servidor
         const fetchEmployees = async () => {
             try {
-                const response = await fetch("https://localhost:3000/employees");
+                const response = await fetch("http://localhost:3000/employees");
                 const data = await response.json();
                 setEmployees(data);
             } catch (error) {
