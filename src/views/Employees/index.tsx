@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import AddEmployee from "../../components/AddEmployee";
+import Header from "../../components/Header";
 import { IEmployee } from "../../interfaces";
 import "./Employees.css";
 
@@ -61,6 +62,8 @@ const Employees = () => {
 
     return (
         <>
+            <Header />
+
             <div className="employees">
                 <h1>Empleados</h1>
 

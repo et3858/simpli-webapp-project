@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import AddCompany from '../../components/AddCompany';
+import Header from "../../components/Header";
 import { ICompany } from "../../interfaces/index";
 import "./Companies.css";
 
@@ -50,6 +51,8 @@ const Companies = () => {
 
     return (
         <>
+            <Header />
+
             <div className="companies">
                 <h1>Empresas</h1>
 
