@@ -2,8 +2,8 @@ import { useMemo, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import FormGroup from '../FormGroup';
-import { CompanyDto } from '../../types';
-import { ICompany } from '../../interfaces';
+import { EmployeeDto } from '../../types';
+import { IEmployee } from '../../interfaces';
 
 
 interface IProps {
@@ -12,22 +12,22 @@ interface IProps {
 };
 
 
-function AddCompany({ show, onClose }: IProps) {
-    const [name, setName] = useState('');
+function AddEmployee({ show, onClose }: IProps) {
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
     const [dni, setDni] = useState('');
-    const [address, setAddress] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [email, setEmail] = useState('');
 
     const disabledButton = useMemo(() => {
-        return !(name && dni && address && phoneNumber);
-    }, [name, dni, address, phoneNumber]);
+        return !(firstName && lastName && dni && email);
+    }, [firstName, lastName, dni, email]);
 
 
     const resetFields = () => {
-        setName('');
+        setFirstName('');
+        setLastName('');
         setDni('');
-        setAddress('');
-        setPhoneNumber('');
+        setEmail('');
     };
 
 
@@ -38,15 +38,16 @@ function AddCompany({ show, onClose }: IProps) {
 
 
     const handleSave = async () => {
-        const companyDto: CompanyDto = {
-            name,
+        const employeeDto: EmployeeDto = {
+            first_name: firstName,
+            last_name: lastName,
             dni,
-            address,
-            phone_number: phoneNumber
+            email,
+            company_id: 1,
         };
 
         try {
-            const response = await fetch("http://localhost:3000/companies", {
+            const response = await fetch("http://localhost:3000/employees", {
                 method: "POST",
                 mode: "cors",
                 cache: "no-cache",
@@ -58,9 +59,9 @@ function AddCompany({ show, onClose }: IProps) {
                 },
                 redirect: "follow",
                 referrerPolicy: "no-referrer",
-                body: JSON.stringify(companyDto),
+                body: JSON.stringify(employeeDto),
             });
-            const data: ICompany = await response.json();
+            const data: IEmployee = await response.json();
 
             resetFields();
             onClose(data);
@@ -74,16 +75,24 @@ function AddCompany({ show, onClose }: IProps) {
         <>
             <Modal show={show} onHide={handleClose} centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Agregar empresa</Modal.Title>
+                    <Modal.Title>Agregar empleado</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
                     <FormGroup
-                        id={"txtName"}
+                        id={"txtFirstName"}
                         label={"Nombre"}
                         placeholder={"Ingresar nombre"}
-                        value={name}
-                        onChange={((v: string) => setName(v))}
+                        value={firstName}
+                        onChange={((v: string) => setFirstName(v))}
+                    />
+
+                    <FormGroup
+                        id={"txtLastName"}
+                        label={"Apellido"}
+                        placeholder={"Ingresar apellido"}
+                        value={lastName}
+                        onChange={((v: string) => setLastName(v))}
                     />
 
                     <FormGroup
@@ -95,19 +104,11 @@ function AddCompany({ show, onClose }: IProps) {
                     />
 
                     <FormGroup
-                        id={"txtAddress"}
-                        label={"Dirección"}
-                        placeholder={"Ingresar dirección"}
-                        value={address}
-                        onChange={((v: string) => setAddress(v))}
-                    />
-
-                    <FormGroup
-                        id={"txtPhoneNumber"}
-                        label={"Número de teléfono"}
-                        placeholder={"Ingresar número"}
-                        value={phoneNumber}
-                        onChange={((v: string) => setPhoneNumber(v))}
+                        id={"txtEmail"}
+                        label={"Email"}
+                        placeholder={"Ingresar email"}
+                        value={email}
+                        onChange={((v: string) => setEmail(v))}
                     />
                 </Modal.Body>
 
@@ -126,4 +127,4 @@ function AddCompany({ show, onClose }: IProps) {
 }
 
 
-export default AddCompany;
+export default AddEmployee;
