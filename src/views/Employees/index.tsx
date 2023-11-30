@@ -1,61 +1,107 @@
 import { useState, useEffect } from "react";
+import AddEmployee from "../../components/AddEmployee";
+import { IEmployee } from "../../interfaces";
 import "./Employees.css";
 
 const Employees = () => {
-    const [employees, setEmployees] = useState([]);
+    const [employees, setEmployees] = useState<IEmployee[]>([]);
+    const [showModal, setShowModal] = useState(false);
+
+
+    const handleClose = (e: IEmployee | null) => {
+        setShowModal(false);
+
+        if (!!e) {
+            setEmployees(prev => [...prev, e]);
+        }
+    };
+    const handleShow = () => setShowModal(true);
 
     useEffect(() => {
         // Obtener la lista de empleados desde el servidor
         const fetchEmployees = async () => {
-            // const response = await fetch("https://api.example.com/employees");
-            // const data = await response.json();
-            // setEmployees(data);
-
-
-
-
-            const data = [
-                {
-                    "id": 1,
-                    "name": "Juan Pérez",
-                    "rut": "12345678-9",
-                    "email": "juan.perez@example.com",
-                    "company": {
+            try {
+                const response = await fetch("https://localhost:3000/employees");
+                const data = await response.json();
+                setEmployees(data);
+            } catch (error) {
+                const data = [
+                    {
                         "id": 1,
-                        "name": "Empresa 1"
-                    }
-                },
-                {
-                    "id": 2,
-                    "name": "María González",
-                    "rut": "98765432-1",
-                    "email": "maria.gonzalez@example.com",
-                    "company": {
+                        "first_name": "Juan",
+                        "last_name": "Pérez",
+                        "dni": "12345678-9",
+                        "email": "juan.perez@example.com",
+                        "company_id": 1,
+                        // "company": {
+                        //     "id": 1,
+                        //     "name": "Empresa 1"
+                        // }
+                    },
+                    {
                         "id": 2,
-                        "name": "Empresa 2"
+                        "first_name": "María",
+                        "last_name": "González",
+                        "dni": "98765432-1",
+                        "email": "maria.gonzalez@example.com",
+                        "company_id": 2,
+                        // "company": {
+                        //     "id": 2,
+                        //     "name": "Empresa 2"
+                        // }
                     }
-                }
-            ];
+                ];
 
-            setEmployees(data);
+                setEmployees(data);
+            }
         };
+
         fetchEmployees();
     }, []);
 
     return (
-        <div className="employees">
-            <h1>Empleados</h1>
-            <ul>
-                {employees.map((employee) => (
-                    <li key={employee.id}>
-                        <h2>{employee.name}</h2>
-                        <p>{employee.rut}</p>
-                        <p>{employee.email}</p>
-                        <p>{employee.company.name}</p>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <>
+            <div className="employees">
+                <h1>Empleados</h1>
+
+
+                <div className="container-md">
+                    <button
+                        type="button"
+                        className="btn btn-success"
+                        onClick={handleShow}
+                    >
+                        Agregar
+                    </button>
+
+                    <table className="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Rut</th>
+                                <th>Email</th>
+                                <th>Empresa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {employees.map((employee) => (
+                            <tr key={employee.id}>
+                                <td><strong>{employee.first_name} {employee.last_name}</strong></td>
+                                <td>{employee.dni}</td>
+                                <td>{employee.email}</td>
+                                <td>{employee.company_id}</td>
+                            </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <AddEmployee
+                show={showModal}
+                onClose={handleClose}
+            />
+        </>
     );
 };
 
