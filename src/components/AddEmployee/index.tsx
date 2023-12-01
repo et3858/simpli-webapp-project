@@ -1,10 +1,11 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import FormGroup from '../FormGroup';
-import { postRequest } from '../../services/fetching';
+import { getRequest, postRequest } from '../../services/fetching';
 import { EmployeeDto } from '../../types';
-import { IEmployee } from '../../interfaces';
+import { ICompany, IEmployee } from '../../interfaces';
 
 
 
@@ -19,10 +20,27 @@ function AddEmployee({ show, onClose }: IProps) {
     const [lastName, setLastName] = useState('');
     const [dni, setDni] = useState('');
     const [email, setEmail] = useState('');
+    const [companyId, setCompanyId] = useState(0);
+    const [companyList, setCompanyList] = useState<ICompany[]>([]);
+
 
     const disabledButton = useMemo(() => {
-        return !(firstName && lastName && dni && email);
-    }, [firstName, lastName, dni, email]);
+        return !(firstName && lastName && dni && email && companyId);
+    }, [firstName, lastName, dni, email, companyId]);
+
+
+    useEffect(() => {
+        const fetchCompanies = async () => {
+            try {
+                const response = await getRequest("/companies");
+                setCompanyList(response);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        fetchCompanies();
+    }, []);
 
 
     const resetFields = () => {
@@ -30,6 +48,11 @@ function AddEmployee({ show, onClose }: IProps) {
         setLastName('');
         setDni('');
         setEmail('');
+    };
+
+
+    const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setCompanyId(parseInt(e.target.value));
     };
 
 
@@ -45,7 +68,7 @@ function AddEmployee({ show, onClose }: IProps) {
             last_name: lastName,
             dni,
             email,
-            company_id: 1,
+            company_id: companyId,
         };
 
         try {
@@ -53,7 +76,7 @@ function AddEmployee({ show, onClose }: IProps) {
             resetFields();
             onClose(response);
         } catch (error) {
-            console.log("LOL")
+            console.log("LOL");
         }
     };
 
@@ -97,6 +120,18 @@ function AddEmployee({ show, onClose }: IProps) {
                         value={email}
                         onChange={((v: string) => setEmail(v))}
                     />
+
+                    <Form.Group className="mb-3" controlId={"cbCompany"}>
+                        <Form.Label>Empresa</Form.Label>
+                        <Form.Select onChange={handleSelect}>
+                            <option value="0">(seleccionar empresa)</option>
+                            {companyList.map(company => (
+                                <option key={company.id} value={company.id}>
+                                    {company.name}
+                                </option>
+                            ))}
+                        </Form.Select>
+                    </Form.Group>
                 </Modal.Body>
 
                 <Modal.Footer>
