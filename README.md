@@ -1,30 +1,53 @@
-# React + TypeScript + Vite
+# simpli-webapp-project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a webapp for the tech assesment by simpli latam. It uses Vite with react and typescript.
 
-Currently, two official plugins are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Steps
 
-## Expanding the ESLint configuration
+### Install NodeJS and npm
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- Having NodeJS v16.x and above installed in your computer. You can get NodeJS [in this link](https://nodejs.org/en/download)
+- Having npm v8.x and above installed in your computer.
+- Having a terminal (either PowerShell or console prompt if you use Windows).
+- Having the API so that the app can consume its resources: https://github.com/et3858/simpli-api-project.
 
-- Configure the top-level `parserOptions` property like this:
+You can get the installation guide on Windows and Mac [in this link](https://radixweb.com/blog/installing-npm-and-nodejs-on-windows-and-mac)
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+
+### Download the project
+
+In this repository, go to "Code" button, then click on "Download ZIP" link in "Local" tab. Once it's downloaded, unzip the file into your preferred location and go to the project folder through the terminal.
+
+Example:
+```sh
+cd path/to/the/project/simpli-webapp-project
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Install modules and dependencies
+
+```sh
+npm install
+```
+
+### Copy and rename the .env.example file to .env and set the API url
+
+```
+VITE_API_URL="YOUR_API_URL"
+```
+
+### Run in development mode
+
+```sh
+npm run dev
+```
+
+By default, the project will be running at http://localhost:5173
+
+### Compile and run in production mode
+
+```sh
+npm run build && npm run preview
+```
+
+By default, the project will be running at http://localhost:4173
