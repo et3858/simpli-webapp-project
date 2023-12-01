@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import AddEmployee from "../../components/AddEmployee";
 import Header from "../../components/Header";
 import { IEmployee } from "../../interfaces";
+import { getRequest } from "../../services/fetching";
 import "./Employees.css";
 
 const Employees = () => {
@@ -22,9 +23,8 @@ const Employees = () => {
         // Obtener la lista de empleados desde el servidor
         const fetchEmployees = async () => {
             try {
-                const response = await fetch("http://localhost:3000/employees");
-                const data = await response.json();
-                setEmployees(data);
+                const response = await getRequest("/employees");
+                setEmployees(response);
             } catch (error) {
                 const data = [
                     {

@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import AddCompany from '../../components/AddCompany';
 import Header from "../../components/Header";
 import { ICompany } from "../../interfaces/index";
+import { getRequest } from "../../services/fetching";
 import "./Companies.css";
+
+
 
 const Companies = () => {
     const [companies, setCompanies] = useState<ICompany[]>([]);
@@ -21,10 +24,10 @@ const Companies = () => {
         // Obtener la lista de empresas desde el servidor
         const fetchCompanies = async () => {
             try {
-                const response = await fetch("http://localhost:3000/companies");
-                const data = await response.json();
-                setCompanies(data);
+                const response = await getRequest("/companies");
+                setCompanies(response);
             } catch (error) {
+                console.log(error)
                 const data = [
                     {
                         "id": 1,

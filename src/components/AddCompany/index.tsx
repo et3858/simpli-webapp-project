@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import FormGroup from '../FormGroup';
+import { postRequest } from '../../services/fetching';
 import { CompanyDto } from '../../types';
 import { ICompany } from '../../interfaces';
 
@@ -46,24 +47,9 @@ function AddCompany({ show, onClose }: IProps) {
         };
 
         try {
-            const response = await fetch("http://localhost:3000/companies", {
-                method: "POST",
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "same-origin",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                },
-                redirect: "follow",
-                referrerPolicy: "no-referrer",
-                body: JSON.stringify(companyDto),
-            });
-            const data: ICompany = await response.json();
-
+            const response = await postRequest("/companies", companyDto) as ICompany;
             resetFields();
-            onClose(data);
+            onClose(response);
         } catch (error) {
             console.log("LOL")
         }

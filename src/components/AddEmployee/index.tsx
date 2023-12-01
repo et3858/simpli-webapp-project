@@ -2,8 +2,10 @@ import { useMemo, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import FormGroup from '../FormGroup';
+import { postRequest } from '../../services/fetching';
 import { EmployeeDto } from '../../types';
 import { IEmployee } from '../../interfaces';
+
 
 
 interface IProps {
@@ -47,24 +49,9 @@ function AddEmployee({ show, onClose }: IProps) {
         };
 
         try {
-            const response = await fetch("http://localhost:3000/employees", {
-                method: "POST",
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "same-origin",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                },
-                redirect: "follow",
-                referrerPolicy: "no-referrer",
-                body: JSON.stringify(employeeDto),
-            });
-            const data: IEmployee = await response.json();
-
+            const response = await postRequest("/employees", employeeDto) as IEmployee;
             resetFields();
-            onClose(data);
+            onClose(response);
         } catch (error) {
             console.log("LOL")
         }
